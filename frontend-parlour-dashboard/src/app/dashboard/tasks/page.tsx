@@ -1,5 +1,5 @@
 const Tasks = () => {
-  return <div>Tasks</div>;
+  return <div className="py-5">Tasks</div>;
 };
 
 export default Tasks;

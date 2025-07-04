@@ -1,5 +1,5 @@
 const Employees = () => {
-  return <div>Employees</div>;
+  return <div className="py-5">Employees</div>;
 };
 
 export default Employees;

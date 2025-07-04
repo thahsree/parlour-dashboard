@@ -1,5 +1,5 @@
-import Sidebar from "./Sidebar";
+import AppSidebar from "./AppSidebar";
 
 
 
-export { Sidebar };
+export { AppSidebar };
