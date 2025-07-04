@@ -1,13 +1,20 @@
+import dotenv from 'dotenv';
 import express from 'express';
-import userRoutes from './routes/userRoute'; // no .js extension needed in TS
-
+import { connectDB } from './config/mongo';
+import taksRoutes from './routes/taskRoute';
+import userRoutes from './routes/userRoute';
 const app = express();
-const PORT = process.env.PORT || 5555;
+dotenv.config();
+const PORT = process.env.PORT
 
 app.use(express.json());
+connectDB()
 
-// Register route
+// Register route;
 app.use('/api/user', userRoutes);
+app.use('/api/task',taksRoutes);
+
+//base route;
 app.get('/', (req, res) => {
   res.send('Server is running');
 });
