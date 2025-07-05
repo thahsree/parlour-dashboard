@@ -26,3 +26,38 @@ export const getTasks = AsyncHandler(async(req , res )=>{
 
     return res.status(200).json(response)
 })
+
+export const updateTask = AsyncHandler(async(req:Request , res:Response) =>{
+
+    const id = req.params.id
+
+    const { task , dueDate , status} = req.body
+
+    const updateFields : any = {}
+
+    if (task) updateFields.task = task;
+    if(dueDate) updateFields.dueDate = dueDate;
+    if(status) updateFields.status = status;
+
+    const updatedTask = await Task.findByIdAndUpdate(id, {$set : updateFields} , {new:true})
+
+    if(!updatedTask){
+        return res.status(404).json({"message":"Task Not Found"});
+    }
+
+    return res.status(200).json(updatedTask)
+    
+
+})
+
+export const deleteTask = AsyncHandler(async(req:Request, res:Response) =>{
+
+    const id = req.params.id;
+
+    const deletedTask = await Task.findOneAndDelete({_id:id});
+
+    if(!deletedTask){
+        return res.status(404).json({"message":"task not found"})
+    }
+    return res.status(200).json(deleteTask);
+})

@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import { connectDB } from './config/mongo';
+import attendanceRoute from './routes/attendace';
 import taksRoutes from './routes/taskRoute';
 import userRoutes from './routes/userRoute';
 const app = express();
@@ -10,9 +11,10 @@ const PORT = process.env.PORT
 app.use(express.json());
 connectDB()
 
-// Register route;
+// Registering routes;
 app.use('/api/user', userRoutes);
 app.use('/api/task',taksRoutes);
+app.use('/api/attendace',attendanceRoute);
 
 //base route;
 app.get('/', (req, res) => {
