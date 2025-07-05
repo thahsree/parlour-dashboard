@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt';
+import { serialize } from 'cookie';
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 import AsyncHandler from '../middleware/AsyncHandler';
 import { User } from '../model/userModel';
 
@@ -71,3 +73,38 @@ export const deleteUser = AsyncHandler(async (req: Request, res: Response) => {
 
   return res.status(200).json({ message: 'User deleted successfully', user: deletedUser });
 });
+
+export const login = AsyncHandler(async(req:Request, res:Response)=>{
+  const { email, password } = req.body;
+
+
+    // 1. Check if user exists
+    const user = await User.findOne({ email });
+    console.log(user)
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // 2. Compare password with hashed one in DB
+    const isMatch = await bcrypt.compare(password, user.password || '');
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // 3. Generate JWT
+    const token = jwt.sign({ userId: user._id , role:user.role }, process.env.JWT_SECRET!, {
+      expiresIn: '7d',
+    });
+
+    // 4. Set HTTP-only cookie
+    const cookie = serialize('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+
+    res.setHeader('Set-Cookie', cookie);
+    res.status(200).json({ success: true, user: { id: user._id, name: user.username } }); // Optional: send user info
+})
