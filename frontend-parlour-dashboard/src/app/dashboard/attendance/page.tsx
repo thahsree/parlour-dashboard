@@ -13,8 +13,10 @@ export default function Attendance() {
 
   console.log(data, "Attendace");
   return (
-    <div className="w-full h-full py-8 px-12 flex flex-col gap-15 items-center">
+    <div className="w-full h-full py-8 px-12 flex flex-col gap-4 items-center">
       <h2 className="text-5xl font-bold text-amber-700">EMPLOYEE ATTENDANCE</h2>
+
+      <div className="w-full mt-10"></div>
       <AppTable taskColumns={taskColumns} data={data} />
     </div>
   );
