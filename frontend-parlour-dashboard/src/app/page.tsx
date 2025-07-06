@@ -1,14 +1,40 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export default function Login() {
   const [showPass, setShowPass] = useState<boolean>(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    //submit logic
+    if (!formData.email || !formData.password) {
+      return alert("email and password required");
+    }
+    console.log(formData);
+  };
+
   return (
     <div className="w-full h-[100vh] flex  items-center justify-center">
       <div className="flex flex-col items-center justify-center gap-7 min-w-[600px] min-h-[700px] py-7 px-5">
-        <h3 className="text-xl font-semibold">ADMIN LOGIN</h3>
+        <h3 className="text-xl font-semibold">PARLOUR LOGIN</h3>
 
-        <form className="flex flex-col gap-2 border px-12 py-12 w-full rounded">
+        <form
+          className="flex flex-col gap-2 border px-12 py-12 w-full rounded"
+          onSubmit={handleSubmit}
+        >
           <label htmlFor="email" className="text-black">
             Email Address <span className="text-red-500">*</span>
           </label>
@@ -18,6 +44,7 @@ export default function Login() {
             placeholder="Enter your email address"
             id="email"
             className="border-b bg-transparent  py-1 px-1"
+            onChange={handleInputChange}
           />
 
           <label htmlFor="password" className="mt-2">
@@ -30,6 +57,7 @@ export default function Login() {
               type={showPass ? "text" : "password"}
               id="password"
               className="border-b bg-transparent py-1 px-1 w-full pr-[13%]"
+              onChange={handleInputChange}
             />
             <div
               onClick={() => setShowPass((prev) => !prev)}

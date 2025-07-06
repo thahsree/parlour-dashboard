@@ -14,8 +14,8 @@ const userModel = new mongoose.Schema(
         },
         role:{
             type:Number,
-            enum:[5555,4444,3333],
-            default:3333
+            enum:[5555,4444],
+            default:4444
         }
     },
     {

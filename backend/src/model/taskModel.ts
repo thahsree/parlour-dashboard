@@ -4,7 +4,7 @@ const taskSchema = new mongoose.Schema(
   {
     employeeId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Employee",
       required: true,
     },
     task: {

@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, deleteUser, editUser, getUser, login } from '../controller/userController';
+import { createUser, deleteUser, editUser, getUser, login, logout } from '../controller/userController';
 import { verifyToken } from '../middleware/verifyJWT';
 import { verifyRoles } from '../middleware/verifyRoles';
 
@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.get('/',verifyToken , verifyRoles(5555,4444), getUser); // will handle GET /api/user
 router.post('/login',login);
+router.post('/logout',logout);
 router.post('/signup',createUser);
 router.patch('/update-user/:id',verifyToken,verifyRoles(5555),editUser);
 router.delete('/delete-user/:id',verifyToken,verifyRoles(5555), deleteUser);

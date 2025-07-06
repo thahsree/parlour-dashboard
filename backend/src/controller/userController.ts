@@ -108,3 +108,17 @@ export const login = AsyncHandler(async(req:Request, res:Response)=>{
     res.setHeader('Set-Cookie', cookie);
     res.status(200).json({ success: true, user: { id: user._id, name: user.username } }); // Optional: send user info
 })
+
+export const logout = AsyncHandler(async(req:Request , res:Response) =>{
+
+  const cookie = serialize('token','',{
+    httpOnly:true,
+    secure:process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path:'/',
+    maxAge:0
+  })
+
+  res.setHeader('Set-Cookie',cookie);
+  res.status(200).json({"message":"logout successful"});
+})
