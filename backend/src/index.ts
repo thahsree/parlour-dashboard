@@ -1,3 +1,4 @@
+import cors from "cors";
 import dotenv from 'dotenv';
 import express from 'express';
 import { connectDB } from './config/mongo';
@@ -12,10 +13,17 @@ const PORT = process.env.PORT
 app.use(express.json());
 connectDB()
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,              // ✅ allow cookies
+  })
+);
+
 // Registering routes;
 app.use('/api/user', userRoutes);
 app.use('/api/task',taksRoutes);
-app.use('/api/attendace',attendanceRoute);
+app.use('/api/attendance',attendanceRoute);
 app.use('/api/employee',employeeRoutes)
 
 //base route;

@@ -7,6 +7,7 @@ import { Attendance } from "../model/attendanceModel";
 export const getAllAttendance = AsyncHandler(async(req:Request , res:Response)=>{
 
     const { employeeId, date } = req.query;
+    console.log('reached attendance')
 
     const query: any = {};
     if (employeeId) query.employeeId = employeeId;
@@ -22,7 +23,7 @@ export const getAllAttendance = AsyncHandler(async(req:Request , res:Response)=>
     
     }
 
-    const attendance = await Attendance.find(query).populate("employeeId","username").sort({timeStamp:-1});
+    const attendance = await Attendance.find(query).populate("employeeId").sort({timeStamp:-1});
 
     if(!attendance){
         return res.status(404).json({"message":"No attendace list found as Query"});

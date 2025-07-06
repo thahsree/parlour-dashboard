@@ -1,9 +1,21 @@
+"use client";
 import AppTable from "@/components/AppTable";
+import { useAttendace } from "@/hooks/useAttendance";
 
 export default function Attendance() {
+  const { data } = useAttendace("2025-07-06");
+  const taskColumns = [
+    { label: "Employee", key: "employeeId.name" },
+    { label: "Status", key: "status" },
+    { label: "Role", key: "employeeId.role" },
+    { label: "Time", key: "timeStamp" },
+  ];
+
+  console.log(data, "Attendace");
   return (
-    <div className="w-full h-full py-8 px-12">
-      <AppTable />
+    <div className="w-full h-full py-8 px-12 flex flex-col gap-15 items-center">
+      <h2 className="text-5xl font-bold text-amber-700">EMPLOYEE ATTENDANCE</h2>
+      <AppTable taskColumns={taskColumns} data={data} />
     </div>
   );
 }

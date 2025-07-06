@@ -79,7 +79,7 @@ export const login = AsyncHandler(async(req:Request, res:Response)=>{
 
 
     // 1. Check if user exists
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
     console.log(user)
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' });
@@ -96,17 +96,10 @@ export const login = AsyncHandler(async(req:Request, res:Response)=>{
       expiresIn: '7d',
     });
 
-    // 4. Set HTTP-only cookie
-    const cookie = serialize('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-    });
 
-    res.setHeader('Set-Cookie', cookie);
-    res.status(200).json({ success: true, user: { id: user._id, name: user.username } }); // Optional: send user info
+    const userObj = user.toObject()
+    delete userObj.password
+    res.status(200).json({ success: true, user:userObj , token});
 })
 
 export const logout = AsyncHandler(async(req:Request , res:Response) =>{
@@ -114,7 +107,7 @@ export const logout = AsyncHandler(async(req:Request , res:Response) =>{
   const cookie = serialize('token','',{
     httpOnly:true,
     secure:process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: 'none',
     path:'/',
     maxAge:0
   })

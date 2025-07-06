@@ -1,3 +1,4 @@
+"use client";
 import {
   CalendarCheck,
   ClipboardList,
@@ -16,6 +17,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/hooks/useAuth";
 
 // Menu items.
 const items = [
@@ -47,6 +49,11 @@ const items = [
 ];
 
 export default function AppSidebar() {
+  const { logout } = useAuth();
+  const handleLogout = async () => {
+    await logout();
+  };
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -59,10 +66,23 @@ export default function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title} className="px-4 py-2">
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="px-5 py-2">
-                      <item.icon />
-                      <span className="text-2xl">{item.title}</span>
-                    </a>
+                    {item.title === "Logout" ? (
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 px-5 py-2 w-full text-left"
+                      >
+                        <item.icon />
+                        <span className="text-2xl">{item.title}</span>
+                      </button>
+                    ) : (
+                      <a
+                        href={item.url}
+                        className="flex items-center gap-3 px-5 py-2"
+                      >
+                        <item.icon />
+                        <span className="text-2xl">{item.title}</span>
+                      </a>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

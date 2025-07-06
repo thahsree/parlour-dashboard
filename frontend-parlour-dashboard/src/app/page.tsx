@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/hooks/useAuth";
 import React, { useState } from "react";
 
 export default function Login() {
@@ -7,6 +8,8 @@ export default function Login() {
     email: "",
     password: "",
   });
+
+  const { loginMutation } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -23,7 +26,7 @@ export default function Login() {
     if (!formData.email || !formData.password) {
       return alert("email and password required");
     }
-    console.log(formData);
+    loginMutation.mutate(formData);
   };
 
   return (

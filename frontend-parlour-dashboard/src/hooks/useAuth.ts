@@ -1,9 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import axios from 'axios';
+import { useRouter } from "next/navigation";
 
-
-
-const PORT = process.env.NEXT_PUBLIC_BASE_URL;
+const PORT = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:4444/api';
 
 const fetchUser = async () => {
   const user = localStorage.getItem("loggedUser");
@@ -12,10 +11,11 @@ const fetchUser = async () => {
   return JSON.parse(user);
 };
 
-export const useAuth = () => {
-  const queryClient = useQueryClient();
 
-  const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+export const useAuth = () => {
+    
+    const router = useRouter();
+  const queryClient = useQueryClient();
   const {
     data: user,
     isLoading,
@@ -23,18 +23,23 @@ export const useAuth = () => {
   } = useQuery({
     queryKey: ["authUser"],
     queryFn: fetchUser,
-    staleTime: Infinity,
   });
-
-  
 
   const loginMutation = useMutation({
     mutationFn: async (formData: { email: string; password: string }) => {
-     
-
-      return;
+    
+        console.log(PORT)
+        const res = await axios.post(`${PORT}/user/login`,formData)
+        if(res){
+            localStorage.setItem("loggedUser", JSON.stringify(res.data.user));
+            localStorage.setItem("token", JSON.stringify(res.data.token));
+            alert('user logged in')
+            router.push('/dashboard');
+        }
+      return res.data.user;
     },
     onSuccess: (user) => {
+    
       queryClient.setQueryData(["authUser"], user);
      
     },
@@ -44,13 +49,25 @@ export const useAuth = () => {
   });
 
   // 🔹 Logout Mutation
-  const logout = () => {
-    
+  const logout = async() => {
+       const res = await axios.post(`${PORT}/user/logout`,)
+        console.log(res,'logout');
+        if(res){
+             queryClient.setQueryData(["authUser"], '');
+             localStorage.removeItem("loggedUser");
+             localStorage.removeItem("token");
+            alert('user logged out')
+            router.push('/');
+        }
+      return;
     
   };
 
-
-
-  return {    
+  return {   
+    loginMutation,
+    logout ,
+    user,
+    isLoading,
+    isError
   };
 };
