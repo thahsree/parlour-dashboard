@@ -16,7 +16,7 @@ const fetchEmployee = async () => {
 const createEmployee = async (formData: {
   name: string;
   role: string;
-  contactNumber: number;
+  contactNumber: string;
 }) => {
   const token = JSON.parse(localStorage.getItem("token") || "{}");
   const res = await axios.post(`${PORT}/employee/create-employee`, formData, {
@@ -34,13 +34,13 @@ const updateEmployee = async ({
   formData,
   id,
 }: {
-  formData: { name?: string; role?: string; contactNumber?: number };
+  formData: { name?: string; role?: string; contactNumber?: string };
   id: string;
 }) => {
   const token = JSON.parse(localStorage.getItem("token") || "{}");
   const res = await axios.patch(
     `${PORT}/employee/update-employee/${id}`,
-    { formData },
+    formData,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,7 +48,24 @@ const updateEmployee = async ({
     }
   );
 
+  if (res.data) {
+    console.log(res.data);
+    alert("employee updated");
+  }
   return res.data;
+};
+
+const deleteEmployee = async (id: string) => {
+  const token = JSON.parse(localStorage.getItem("token") || "{}");
+  const res = await axios.delete(`${PORT}/employee/delete-employee/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (res) {
+    alert("deleted employee from database");
+  }
 };
 export const useEmployee = () => {
   const queryClient = useQueryClient();
@@ -70,11 +87,19 @@ export const useEmployee = () => {
       queryClient.invalidateQueries({ queryKey: ["Employee"] });
     },
   });
+
+  const deleteEmployeeMutation = useMutation({
+    mutationFn: deleteEmployee,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["Employee"] });
+    },
+  });
   return {
     data,
     isLoading,
     isError,
     createEmployeeMutation,
     updateEmployeeMutation,
+    deleteEmployeeMutation,
   };
 };

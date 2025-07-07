@@ -1,7 +1,7 @@
 import express from 'express';
 import {
-    addAttendance,
-    getAllAttendance,
+  addAttendance,
+  getAllAttendance,
 } from '../controller/attendanceController';
 import { verifyToken } from '../middleware/verifyJWT';
 import { verifyRoles } from '../middleware/verifyRoles';
