@@ -12,13 +12,13 @@ const PORT = process.env.PORT
 
 app.use(express.json());
 connectDB()
-
+const allowedOrigins = ["https://parlour-dashboard-delta.vercel.app","http://localhost:3000"];
 app.use(
   cors({
-    origin: "https://parlour-dashboard-delta.vercel.app/",
-    credentials: true,              // ✅ allow cookies
+    origin: allowedOrigins,
   })
 );
+
 
 // Registering routes;
 app.use('/api/user', userRoutes);
