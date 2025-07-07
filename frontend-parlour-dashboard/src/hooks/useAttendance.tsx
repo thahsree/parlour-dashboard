@@ -2,9 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 const PORT = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:4444/api";
-
+const token = JSON.parse(localStorage.getItem("token") || "{}");
 const fetchAttendance = async (date: String) => {
-  const token = JSON.parse(localStorage.getItem("token") || "{}");
   console.log(token, "token");
   const res = await axios.post(
     `${PORT}/attendance`,

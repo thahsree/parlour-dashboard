@@ -4,6 +4,7 @@ import { useAttendace } from "@/hooks/useAttendance";
 
 export default function Attendance() {
   const { data } = useAttendace("2025-07-06");
+
   const taskColumns = [
     { label: "Employee", key: "employeeId.name" },
     { label: "Status", key: "status" },
