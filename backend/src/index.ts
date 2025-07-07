@@ -15,7 +15,7 @@ connectDB()
 
 app.use(
   cors({
-    origin: ["http://localhost:3000","https://parlour-dashboard-delta.vercel.app/"],
+    origin: "https://parlour-dashboard-delta.vercel.app/",
     credentials: true,              // ✅ allow cookies
   })
 );
