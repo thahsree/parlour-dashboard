@@ -19,15 +19,14 @@ const createEmployee = async (formData: {
   contactNumber: number;
 }) => {
   const token = JSON.parse(localStorage.getItem("token") || "{}");
-  const res = await axios.post(
-    `${PORT}/employee/create-employee`,
-    { formData },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const res = await axios.post(`${PORT}/employee/create-employee`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (res) {
+    alert("employee created");
+  }
   return res.data;
 };
 
@@ -58,14 +57,14 @@ export const useEmployee = () => {
     queryFn: fetchEmployee,
   });
 
-  const createTaskMutation = useMutation({
+  const createEmployeeMutation = useMutation({
     mutationFn: createEmployee,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["Employee"] });
     },
   });
 
-  const updateTaskMutation = useMutation({
+  const updateEmployeeMutation = useMutation({
     mutationFn: updateEmployee,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["Employee"] });
@@ -75,7 +74,7 @@ export const useEmployee = () => {
     data,
     isLoading,
     isError,
-    createTaskMutation,
-    updateTaskMutation,
+    createEmployeeMutation,
+    updateEmployeeMutation,
   };
 };

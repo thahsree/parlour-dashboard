@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { Circle } from "lucide-react";
 interface AppTableProps {
   taskColumns: { label: string; key: string }[];
   data: any[];
@@ -44,12 +45,19 @@ const AppTable: React.FC<AppTableProps> = ({
         {data.map((row, index) => (
           <TableRow key={index}>
             {taskColumns.map((col) => (
-              <TableCell key={col.key} className="px-4 py-2 border-r">
-                {col.key === "status" && getValue(row, col.key) === "in"
-                  ? "green "
-                  : col.key === "status" && getValue(row, col.key) === "out"
-                  ? "red "
-                  : ""}
+              <TableCell
+                key={col.key}
+                className={`px-4 py-2 border-r ${
+                  col.key === "status" && "flex gap-1 items-center"
+                }`}
+              >
+                {col.key === "status" && getValue(row, col.key) === "in" ? (
+                  <Circle fill="green" size={10} />
+                ) : col.key === "status" && getValue(row, col.key) === "out" ? (
+                  <Circle fill="red" />
+                ) : (
+                  ""
+                )}
                 {getValue(row, col.key)}
               </TableCell>
             ))}

@@ -5,10 +5,12 @@ import AppTable from "@/components/AppTable";
 import { useEmployee } from "@/hooks/useEmployee";
 import { useState } from "react";
 
+import { XSquare } from "lucide-react";
+
 const Employees = () => {
   const { data } = useEmployee();
   const [showModel, setShowModel] = useState<boolean>(false);
-
+  const { createEmployeeMutation } = useEmployee();
   type EmployeeFormData = {
     name: string;
     role: string;
@@ -34,13 +36,34 @@ const Employees = () => {
   ];
 
   const handleSubmit = async () => {
-    alert("employee submit");
+    if (!formData.name || !formData.role || !formData.contactNumber) {
+      alert("incomplete required field");
+      return;
+    }
+    createEmployeeMutation.mutate({
+      name: formData.name,
+      role: formData.role,
+      contactNumber: Number(formData.contactNumber),
+    });
+
+    setFormData({
+      name: "",
+      role: "",
+      contactNumber: "",
+    });
+    setShowModel(false);
   };
 
   return (
     <div className="w-full h-full py-8 px-12 flex flex-col gap-4 items-center relative">
       {showModel && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gray-300 border rounded text-black z-50">
+          <div
+            className="p-4 cursor-pointer"
+            onClick={() => setShowModel((prev) => !prev)}
+          >
+            <XSquare width={30} height={30} />
+          </div>
           <AddDataModel<EmployeeFormData>
             formData={formData}
             setFormData={setFormData}

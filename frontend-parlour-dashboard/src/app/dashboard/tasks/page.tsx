@@ -2,6 +2,7 @@
 import AddDataModel from "@/components/AddDataModel";
 import AppTable from "@/components/AppTable";
 import { useTask } from "@/hooks/useTask";
+import { XSquare } from "lucide-react";
 import { useState } from "react";
 
 const Tasks = () => {
@@ -40,6 +41,12 @@ const Tasks = () => {
     <div className="w-full h-full py-8 px-12 flex flex-col gap-4 items-center relative">
       {showModel && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gray-300 border rounded text-black z-50">
+          <div
+            className="p-4 cursor-pointer"
+            onClick={() => setShowModel((prev) => !prev)}
+          >
+            <XSquare width={30} height={30} />
+          </div>
           <AddDataModel<TaskFormData>
             formData={formData}
             setFormData={setFormData}
