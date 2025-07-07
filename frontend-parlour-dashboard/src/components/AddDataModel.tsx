@@ -1,4 +1,4 @@
-// AddDataModel.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Dispatch, SetStateAction } from "react";
 
