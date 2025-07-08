@@ -32,22 +32,24 @@ const createTask = async (formData: {
 };
 
 const updateTask = async ({
-  formData,
+  taskData,
   id,
 }: {
-  formData: { task?: string; status?: string; dueDate?: Date };
+  taskData: { task?: string; status?: string; dueDate?: string };
   id: string;
 }) => {
   const token = JSON.parse(localStorage.getItem("token") || "{}");
-  const res = await axios.patch(
-    `${PORT}/task/update-task/${id}`,
-    { formData },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+
+  console.log(token);
+  console.log(taskData, "ID>>>" + id);
+  const res = await axios.patch(`${PORT}/task/update-task/${id}`, taskData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (res.data) {
+    alert("task updated successfully");
+  }
 
   return res.data;
 };
