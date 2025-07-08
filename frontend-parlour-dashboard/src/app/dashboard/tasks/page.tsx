@@ -92,7 +92,9 @@ const Tasks = () => {
       id: "",
     });
   };
-  const handleDeleteTask = (data: any) => {};
+  const handleDeleteTask = (data: any) => {
+    console.log(data);
+  };
 
   return (
     <div className="w-full h-full py-8 px-12 flex flex-col gap-4 items-center relative">
