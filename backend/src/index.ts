@@ -12,7 +12,8 @@ const PORT = process.env.PORT
 
 app.use(express.json());
 connectDB()
-const allowedOrigins = ["https://parlour-dashboard-delta.vercel.app","http://localhost:3000"];
+const allowedOrigins = ["https://parlour-dashboard-delta.vercel.app","http://localhost:3000" 
+  ,"https://parlour-dashboard-git-main-thashreefs-projects-29de65dc.vercel.app/"];
 app.use(
   cors({
     origin: allowedOrigins,
