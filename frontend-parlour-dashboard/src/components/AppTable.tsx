@@ -24,9 +24,11 @@ const AppTable: React.FC<AppTableProps> = ({
   data,
   renderActions,
 }) => {
-  if (!data || data.length === 0)
+  if (!data || data.length === 0) {
     return <p className="text-center">No data found.</p>;
+  }
 
+  console.log(data, "Data");
   return (
     <Table className="border w-full">
       <TableHeader>

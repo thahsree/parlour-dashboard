@@ -16,18 +16,17 @@ const fetchTask = async () => {
 const createTask = async (formData: {
   employeeId: string;
   task: string;
-  date: string;
+  dueDate: string;
 }) => {
   const token = JSON.parse(localStorage.getItem("token") || "{}");
-  const res = await axios.post(
-    `${PORT}/task/create-task`,
-    { formData },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const res = await axios.post(`${PORT}/task/create-task`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (res.data) {
+    alert("new task created");
+  }
   return res.data;
 };
 

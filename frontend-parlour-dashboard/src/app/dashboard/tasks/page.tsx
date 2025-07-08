@@ -18,7 +18,7 @@ const Tasks = () => {
 
   const employeeFormFields = [
     { name: "employeeId", label: "employee", type: "text" },
-    { name: "Task", label: "task", type: "text" },
+    { name: "task", label: "Task", type: "text" },
     { name: "dueDate", label: "due Date", type: "text" },
   ];
 
@@ -37,6 +37,8 @@ const Tasks = () => {
     dueDate: "",
   });
 
+  const { createTaskMutation } = useTask();
+
   const taskColumns = [
     { label: "Employee", key: "employeeId.name" },
     { label: "Role", key: "employeeId.role" },
@@ -45,7 +47,17 @@ const Tasks = () => {
     { label: "Status", key: "status" },
   ];
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    alert("sbmit createtask");
+    createTaskMutation.mutate(formData);
+    setFormData({
+      employeeId: "",
+      task: "",
+      dueDate: "",
+    });
+
+    setShowModel(false);
+  };
 
   const handleEditTask = (data: any) => {
     setEditModel(true);
