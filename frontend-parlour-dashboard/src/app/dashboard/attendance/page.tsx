@@ -3,8 +3,11 @@ import AppTable from "@/components/AppTable";
 import { useAttendace } from "@/hooks/useAttendance";
 
 export default function Attendance() {
-  const { data } = useAttendace("2025-07-06");
+  const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0];
+  const { data } = useAttendace(formattedDate);
 
+  console.log(data, "New Data");
   const taskColumns = [
     { label: "Employee", key: "employeeId.name" },
     { label: "Status", key: "status" },
@@ -17,7 +20,6 @@ export default function Attendance() {
     <div className="w-full h-full py-8 px-12 flex flex-col gap-4 items-center">
       <h2 className="text-5xl font-bold text-amber-700">EMPLOYEE ATTENDANCE</h2>
 
-      <div className="w-full mt-10">Select Date</div>
       <AppTable taskColumns={taskColumns} data={data} />
     </div>
   );

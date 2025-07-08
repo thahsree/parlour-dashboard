@@ -56,7 +56,7 @@ const AppTable: React.FC<AppTableProps> = ({
                 {col.key === "status" && getValue(row, col.key) === "in" ? (
                   <Circle fill="green" size={10} />
                 ) : col.key === "status" && getValue(row, col.key) === "out" ? (
-                  <Circle fill="red" />
+                  <Circle fill="red" size={10} />
                 ) : (
                   ""
                 )}

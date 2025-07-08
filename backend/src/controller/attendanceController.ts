@@ -23,6 +23,7 @@ export const getAllAttendance = AsyncHandler(async(req:Request , res:Response)=>
     
     }
 
+    console.log(query , "Query")
     const attendance = await Attendance.find(query).populate("employeeId").sort({timeStamp:-1});
 
     if(!attendance){
@@ -37,12 +38,26 @@ export const addAttendance = AsyncHandler(async (req:Request,res:Response)=>{
 
     const {id , status} = req.body
 
+    console.log(id ,">>>", status)
     if(!id || !status){
         return res.status(404).json({"message":"Employee Id and status required"})
     }
 
     if(!["in","out"].includes(status)){
         return res.status(404).json({"message":"status must be either IN or OUT"})
+    }
+
+    const now = new Date();
+    const startOfDay = new Date(now.setHours(0, 0, 0, 0));
+    const endOfDay = new Date(now.setHours(23, 59, 59, 999));
+
+    const latestEntry = await Attendance.findOne({
+    employeeId: id,
+    timeStamp: { $gte: startOfDay, $lte: endOfDay },
+    }).sort({ timeStamp: -1 });
+
+    if (latestEntry && latestEntry.status === status) {
+        return res.status(409).json({ message: `Already marked ${status}` });
     }
 
     const response = await Attendance.create({
