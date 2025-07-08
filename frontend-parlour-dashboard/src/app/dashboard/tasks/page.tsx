@@ -78,7 +78,7 @@ const Tasks = () => {
       alert("incolmplete required fields");
       return;
     }
-    let newData = {
+    const newData = {
       task: taskData.task,
       dueDate: taskData.dueDate,
       status: taskData.status,
