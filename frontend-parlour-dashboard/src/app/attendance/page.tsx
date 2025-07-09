@@ -2,14 +2,9 @@
 
 import { useAttendace } from "@/hooks/useAttendance";
 import { useEmployee } from "@/hooks/useEmployee";
-import { useState } from "react";
 
 const Attendace = () => {
   const { data } = useEmployee();
-  const [attendanceStatus, setAttendanceStatus] = useState({
-    id: "",
-    status: "",
-  });
 
   const today = new Date();
   const formattedDate = today.toISOString().split("T")[0];
@@ -35,21 +30,13 @@ const Attendace = () => {
             <div className="flex gap-3">
               <button
                 onClick={() => handleAttendance(item._id, "in")}
-                className={`px-4 py-2 rounded text-white ${
-                  attendanceStatus.status === "in"
-                    ? "bg-green-600"
-                    : "bg-green-500 hover:bg-green-600"
-                }`}
+                className="px-4 py-2 rounded text-white "
               >
                 Check In
               </button>
               <button
                 onClick={() => handleAttendance(item._id, "out")}
-                className={`px-4 py-2 rounded text-white ${
-                  attendanceStatus.status === "out"
-                    ? "bg-red-600"
-                    : "bg-red-500 hover:bg-red-600"
-                }`}
+                className="px-4 py-2 rounded text-white bg-red-500 hover:bg-red-600"
               >
                 Check Out
               </button>
