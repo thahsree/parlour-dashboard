@@ -23,7 +23,7 @@ const Attendace = () => {
 
   return (
     <div className="w-full h-full flex flex-col gap-8 items-center justify-center py-10 px-5">
-      <h2 className="text-4xl font-bold text-amber-700">Employee Attendance</h2>
+      <h2 className="text-4xl font-bold text-amber-700">Attendance Page</h2>
 
       <ul className="w-full max-w-3xl flex flex-col gap-6">
         {data?.map((item: any) => (
