@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { disconnectSocket, initSocket } from "@/lib/Socket";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from 'axios';
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { Socket } from "socket.io-client";
 
 const PORT = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:4444/api';
+let socket: Socket | null = null;
 
 const fetchUser = async () => {
   const user = localStorage.getItem("loggedUser");
@@ -26,6 +30,14 @@ export const useAuth = () => {
     queryFn: fetchUser,
   });
 
+    useEffect(() => {
+    if (user && (!socket || !socket.connected)) {
+      console.log(user._id, "userID");
+      socket = initSocket(user._id);
+      socket.connect();
+
+    }
+  }, [user]);
   const loginMutation = useMutation({
     mutationFn: async (formData: { email: string; password: string }) => {
     
@@ -53,6 +65,9 @@ export const useAuth = () => {
   const logout = async() => {
        const res = await axios.post(`${PORT}/user/logout`,)
         console.log(res,'logout');
+        if (socket) {
+        disconnectSocket();
+      }
         if(res){
              queryClient.setQueryData(["authUser"], '');
              localStorage.removeItem("loggedUser");
@@ -60,6 +75,7 @@ export const useAuth = () => {
             alert('user logged out')
             router.push('/');
         }
+        
       return;
     
   };

@@ -31,7 +31,7 @@ const Attendace = () => {
             <div className="flex gap-3">
               <button
                 onClick={() => handleAttendance(item._id, "in")}
-                className="px-4 py-2 rounded text-white "
+                className="px-4 py-2 rounded text-white bg-green-500 hover:bg-green-600"
               >
                 Check In
               </button>

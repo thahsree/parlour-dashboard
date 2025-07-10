@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { getSocket } from "@/lib/Socket";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-
+import { useEffect } from "react";
 const PORT = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:4444/api";
 
 const fetchAttendance = async (date: string) => {
@@ -46,6 +47,32 @@ export const useAttendace = (date: string) => {
       alert(message); // Optional: show to user
     },
   });
+
+  // ✅ Real-time listener (Socket.IO)
+  useEffect(() => {
+    const socket = getSocket();
+    if (!date) return;
+
+    if (!socket) return;
+
+    const handleSocketUpdate = (newRecord: any) => {
+      console.log("🔁 Attendance update via socket:", newRecord);
+
+      queryClient.setQueryData(["attendance", date], (oldData: any[] = []) => {
+        // Add new punch to the top, avoid duplicates
+        const exists = oldData.some((a) => a._id === newRecord._id);
+        if (exists) return oldData;
+
+        return [newRecord, ...oldData];
+      });
+    };
+
+    socket.on("attendance:update", handleSocketUpdate);
+
+    return () => {
+      socket.off("attendance:update", handleSocketUpdate);
+    };
+  }, [queryClient, date]);
 
   return {
     data,

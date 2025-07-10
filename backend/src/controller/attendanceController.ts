@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
+import { io } from "../lib/socket";
 import AsyncHandler from "../middleware/AsyncHandler";
 import { Attendance } from "../model/attendanceModel";
-
 
 
 export const getAllAttendance = AsyncHandler(async(req:Request , res:Response)=>{
@@ -64,6 +64,8 @@ export const addAttendance = AsyncHandler(async (req:Request,res:Response)=>{
         employeeId:id,
         status
     })
+    const populated = await response.populate('employeeId');
 
-    return res.status(200).json(response);
+    io.emit('attendance:update',response);
+    return res.status(200).json(populated);
 })
